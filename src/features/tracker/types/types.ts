@@ -1,6 +1,10 @@
+export type TaskPriorityType = "low" | "medium" | "high";
+
 export type TaskType = {
   id: string;
-  text: string;
+  title: string;
+  description: string;
   checked: boolean;
   time: string;
+  priority: TaskPriorityType;
 };
