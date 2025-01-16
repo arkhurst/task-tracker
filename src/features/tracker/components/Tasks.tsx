@@ -1,27 +1,16 @@
 import { AnimatePresence } from "framer-motion";
 import { type TaskType } from "../types/types";
 import { Task } from "./Task";
+import { useTaskTracker } from "../hooks/useTaskTracker";
 
-interface TaskProps {
-  tasks: TaskType[];
-  handleCheck: (id: string) => void;
-  removeElement: (id: string) => void;
-}
+export const Tasks = () => {
+  const { tasks } = useTaskTracker();
 
-export const Tasks = ({ tasks, handleCheck, removeElement }: TaskProps) => {
   return (
-    <div className="w-full space-y-3">
+    <div className="w-full space-y-3 mt-5">
       <AnimatePresence>
         {tasks.map((t: TaskType) => (
-          <Task
-            handleCheck={handleCheck}
-            removeElement={removeElement}
-            id={t.id}
-            key={t.id}
-            checked={t.checked}
-            time={t.time}
-            title={t.text}
-          />
+          <Task key={t.id} task={t} />
         ))}
       </AnimatePresence>
     </div>
