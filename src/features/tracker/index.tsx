@@ -2,8 +2,7 @@ import { Header } from "./components/Header";
 import { Tasks } from "./components/Tasks";
 import { PriorityFilter } from "./components/PriorityFilter";
 import { TaskTrackerProvider } from "./hooks/useTaskTracker";
-import { EditTask } from "./components/EditTask";
-import { AddTask } from "./components/AddTask";
+import { Form } from "./components/Form";
 
 const TaskTrackerList = () => {
   return (
@@ -19,8 +18,7 @@ const TaskTrackerList = () => {
           <PriorityFilter />
           <Tasks />
         </div>
-        <AddTask />
-        <EditTask />
+        <Form />
       </section>
     </TaskTrackerProvider>
   );

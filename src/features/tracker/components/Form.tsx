@@ -1,39 +1,66 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { FiPlus } from "react-icons/fi";
+import { useTaskTracker } from "../hooks/useTaskTracker";
 import { TaskPriorityType } from "../types/types";
+import { FiPlus } from "react-icons/fi";
 
-interface FormIProps {
-  time: number;
-  setTime: (value: React.SetStateAction<number>) => void;
-  title: string;
-  setTitle: (value: React.SetStateAction<string>) => void;
-  description: string;
-  setDescription: (value: React.SetStateAction<string>) => void;
-  priority: TaskPriorityType;
-  setPriority: (value: React.SetStateAction<TaskPriorityType>) => void;
-  unit: string;
-  setUnit: (value: React.SetStateAction<string>) => void;
-  handleSubmit: () => void;
-  visible: boolean;
-  setVisible: (value: React.SetStateAction<boolean>) => void;
-}
+export const Form = () => {
+  const { addTask, editTask, selectedTask, setSelectedTask } = useTaskTracker();
+  const [visible, setVisible] = useState(false);
+  const [time, setTime] = useState(15);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState<TaskPriorityType>();
+  const [unit, setUnit] = useState("mins");
 
-export const Form = ({
-  time,
-  title,
-  description,
-  priority,
-  unit,
-  handleSubmit,
-  visible,
-  setVisible,
-  setTime,
-  setTitle,
-  setDescription,
-  setPriority,
-  setUnit,
-}: FormIProps) => {
+  useEffect(() => {
+    if (selectedTask) {
+      setTitle(selectedTask.title);
+      setDescription(selectedTask.description);
+      setPriority(selectedTask.priority);
+      const [timeValue, timeUnit] = selectedTask.time.split(" ");
+      setTime(parseInt(timeValue));
+      setUnit(timeUnit);
+      setVisible(true);
+    }
+  }, [selectedTask]);
+
+  const handleSubmit = () => {
+    if (!title.length || !description.length || !priority) return;
+
+    if (selectedTask) {
+      const updatedTask = {
+        ...selectedTask,
+        title,
+        description,
+        priority,
+        time: `${time} ${unit}`,
+        checked: selectedTask.checked,
+        id: selectedTask.id,
+      };
+
+      editTask(updatedTask);
+    } else {
+      addTask({
+        title,
+        description,
+        priority,
+        time: `${time} ${unit}`,
+      });
+    }
+
+    resetForm();
+  };
+
+  const resetForm = () => {
+    setTime(15);
+    setTitle("");
+    setDescription("");
+    setPriority("medium");
+    setUnit("mins");
+    setVisible(false);
+    setSelectedTask(null);
+  };
   return (
     <div className="fixed bottom-6 left-1/2 w-full max-w-xl -translate-x-1/2 px-4">
       <AnimatePresence>
@@ -102,7 +129,7 @@ export const Form = ({
                   onChange={(e) =>
                     setPriority(e.target.value as TaskPriorityType)
                   }
-                  className=" rounded bg-zinc-700 px-1.5 py-1 text-sm text-zinc-50 focus:outline-0"
+                  className="rounded bg-zinc-700 px-1.5 py-1 text-sm text-zinc-50 focus:outline-0"
                 >
                   <option value="low">Low</option>
                   <option value="medium">Medium</option>

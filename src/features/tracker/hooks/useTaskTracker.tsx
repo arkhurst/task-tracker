@@ -20,14 +20,11 @@ interface TaskTrackerContextType {
   priorityFilter: TaskPriorityType | "all";
   setPriorityFilter: (filter: TaskPriorityType | "all") => void;
   handleCheck: (id: string) => void;
-  removeElement: (id: string) => void;
-  editElement: (task: TaskType) => void;
+  removeTask: (id: string) => void;
+  editTask: (task: TaskType) => void;
   addTask: (task: Omit<TaskType, "id" | "checked">) => void;
-  formInputVisible: boolean;
-  setFormInputVisible: (value: React.SetStateAction<boolean>) => void;
   selectedTask: TaskType | null;
   setSelectedTask: (value: React.SetStateAction<TaskType | null>) => void;
-  showForm: () => void;
 }
 
 const TaskTrackerContext = createContext<TaskTrackerContextType | undefined>(
@@ -39,7 +36,6 @@ export const TaskTrackerProvider = ({ children }: PropsWithChildren) => {
   const [priorityFilter, setPriorityFilter] = useLocalStorage<
     TaskPriorityType | "all"
   >(PRIORITY_FILTER_KEY, "all");
-  const [formInputVisible, setFormInputVisible] = useState(false);
   const [selectedTask, setSelectedTask] = useState<TaskType | null>(null);
 
   const sortedAndFilteredTasks = tasks
@@ -64,11 +60,9 @@ export const TaskTrackerProvider = ({ children }: PropsWithChildren) => {
     );
   };
 
-  const removeElement = (id: string) => {
+  const removeTask = (id: string) => {
     setTasks(tasks.filter((t) => t.id !== id));
   };
-
-  const showForm = () => setFormInputVisible(true);
 
   const editTask = (task: TaskType) => {
     setTasks(tasks.map((t) => (t.id === task.id ? { ...t, ...task } : t)));
@@ -92,14 +86,11 @@ export const TaskTrackerProvider = ({ children }: PropsWithChildren) => {
         priorityFilter,
         setPriorityFilter,
         handleCheck,
-        removeElement,
-        editElement: editTask,
+        removeTask,
+        editTask: editTask,
         addTask,
-        setFormInputVisible,
-        formInputVisible,
         selectedTask,
         setSelectedTask,
-        showForm,
       }}
     >
       {children}
