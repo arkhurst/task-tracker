@@ -8,6 +8,7 @@ import { TaskType, TaskPriorityType } from "../types/types";
 import { generateId } from "../utils/utils";
 import { useLocalStorage } from "@/hooks";
 import { PRIORITY_FILTER_KEY, TRACKER_DATA_KEY } from "@/constants";
+import { toast } from "sonner";
 
 const priorityOrder = {
   high: 0,
@@ -62,10 +63,12 @@ export const TaskTrackerProvider = ({ children }: PropsWithChildren) => {
 
   const removeTask = (id: string) => {
     setTasks(tasks.filter((t) => t.id !== id));
+    toast.success("Task removed successfully");
   };
 
   const editTask = (task: TaskType) => {
     setTasks(tasks.map((t) => (t.id === task.id ? { ...t, ...task } : t)));
+    toast.success("Task updated successfully");
   };
 
   const addTask = (task: Omit<TaskType, "id" | "checked">) => {
@@ -77,6 +80,7 @@ export const TaskTrackerProvider = ({ children }: PropsWithChildren) => {
       },
       ...tasks,
     ]);
+    toast.success("Task added successfully");
   };
 
   return (
