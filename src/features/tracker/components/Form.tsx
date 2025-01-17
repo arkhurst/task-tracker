@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useTaskTracker } from "../hooks/useTaskTracker";
 import { TaskPriorityType } from "../types/types";
 import { FiPlus } from "react-icons/fi";
+import { toast } from "sonner";
 
 export const Form = () => {
   const { addTask, editTask, selectedTask, setSelectedTask } = useTaskTracker();
@@ -26,7 +27,9 @@ export const Form = () => {
   }, [selectedTask]);
 
   const handleSubmit = () => {
-    if (!title.length || !description.length || !priority) return;
+    if (!title.length || !description.length || !priority) {
+      toast.error("Please fill all fields");
+    }
 
     if (selectedTask) {
       const updatedTask = {

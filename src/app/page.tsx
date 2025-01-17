@@ -1,5 +1,8 @@
 "use client";
+import dynamic from "next/dynamic";
 
-import TaskTrackerList from "@/features/tracker";
+const TaskTrackerList = dynamic(() => import("@/features/tracker"), {
+  ssr: false,
+});
 
 export default TaskTrackerList;
