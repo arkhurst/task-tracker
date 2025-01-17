@@ -2,7 +2,9 @@ import { useTaskTracker } from "../hooks/useTaskTracker";
 import { type TaskPriorityType } from "../types/types";
 
 export const PriorityFilter = () => {
-  const { priorityFilter, setPriorityFilter } = useTaskTracker();
+  const { priorityFilter, setPriorityFilter, tasks } = useTaskTracker();
+
+  if (!tasks.length) return null;
 
   return (
     <div className="mb-4 flex gap-2">
