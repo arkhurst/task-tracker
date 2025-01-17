@@ -10,7 +10,7 @@ export const Form = () => {
   const [time, setTime] = useState(15);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [priority, setPriority] = useState<TaskPriorityType>();
+  const [priority, setPriority] = useState<TaskPriorityType>("low");
   const [unit, setUnit] = useState("mins");
 
   useEffect(() => {
@@ -56,7 +56,7 @@ export const Form = () => {
     setTime(15);
     setTitle("");
     setDescription("");
-    setPriority("medium");
+    setPriority("low");
     setUnit("mins");
     setVisible(false);
     setSelectedTask(null);
